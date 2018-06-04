@@ -107,6 +107,7 @@ router.post(
     if (!isValid) {
       return res.status(400).json(errors);
     }
+
     // Get fields
     const profileFields = {};
     profileFields.user = req.user.id;
