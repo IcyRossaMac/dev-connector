@@ -6,7 +6,14 @@ const initialState = {};
 
 const middleware = [thunk];
 
-const composeEnhancer = window._REDUX_DEVTOOLS_EXTENSION_COMPOSE_ || compose;
+const composeEnhancer =
+  process.env.NODE_ENV !== "production" &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        name: "App",
+        actionBlacklist: ["REDUX_STORAGE_SAVE"]
+      })
+    : compose;
 
 const enhancer = composeEnhancer(applyMiddleware(...middleware));
 
