@@ -78,7 +78,6 @@ class EditProfile extends Component {
         instagram: profile.instagram
       })
     }
-
   }
 
   onSubmit(e) {
