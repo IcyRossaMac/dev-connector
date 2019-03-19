@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { getCurrentProfile, deleteAccount } from "../../actions/profileActions";
+import {connect} from 'react-redux';
+import {getCurrentProfile, deleteAccount} from "../../actions/profileActions";
 import Spinner from '../common/Spinner'
 import ProfileActions from './ProfileActions';
+import Experience from './Experience';
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -16,23 +17,23 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { user } = this.props.auth;
-    const { profile, loading} = this.props.profile;
+    const {user} = this.props.auth;
+    const {profile, loading} = this.props.profile;
 
     let dashboardContent;
 
-    if(profile === null || loading ) {
+    if (profile === null || loading) {
       dashboardContent = <Spinner/>
     } else {
       // Check if logged in user has profile data
-      if(Object.keys(profile).length > 0) {
+      if (Object.keys(profile).length > 0) {
         dashboardContent = (
           <div>
             <p className="lead muted-text">
-              Welcome <Link to={`/profile/${profile.handle}`}>{ user.name }</Link>
+              Welcome <Link to={`/profile/${profile.handle}`}>{user.name}</Link>
             </p>
             <ProfileActions/>
-            {/* TODO: exp and edu */}
+            <Experience experience={profile.experience}/>
             <div style={{marginBottom: '60px'}}/>
             <button onClick={this.onDeleteClick.bind(this)} className="btn btn-danger">
               Delete My Account
@@ -43,7 +44,7 @@ class Dashboard extends Component {
         // User is logged in but has no profile
         dashboardContent = (
           <div>
-            <p className="lead muted-text">Welcome { user.name }</p>
+            <p className="lead muted-text">Welcome {user.name}</p>
             <p>You have not yet setup a profile, please add some more info</p>
             <Link to="/create-profile" className="btn btn-lg btn-info">
               Create Profile
@@ -80,4 +81,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(Dashboard);
+export default connect(mapStateToProps, {getCurrentProfile, deleteAccount})(Dashboard);
