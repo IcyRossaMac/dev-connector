@@ -20,7 +20,7 @@ var db = process.env.MONGOURI;
 
 // Connect to mongodb
 mongoose
-  .connect(db)
+  .connect(db, { useNewUrlParser: true })
   .then(() => console.log("MongoDB is connected"))
   .catch(err => console.log(err));
 
