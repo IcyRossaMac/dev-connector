@@ -1,9 +1,27 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {deleteComment} from '../../actions/postActions';
+import { getProfiles } from '../../actions/profileActions';
 
 class CommentItem extends Component {
+  componentDidMount() {
+    this.props.getProfiles();
+  }
+
+  findHandleProfile(profiles, commentUser) {
+    let handle;
+    if (profiles != null && profiles.length > 0) {
+      profiles.forEach(profile => {
+        if (profile.user._id === commentUser) {
+          handle = profile.handle;
+        }
+      });
+    }
+    return handle;
+  }
+
   onDeleteClick(postId, commentId){
     this.props.deleteComment(postId, commentId);
   }
@@ -11,14 +29,16 @@ class CommentItem extends Component {
   render() {
     const {comment, postId, auth} = this.props;
 
+    const { profiles } = this.props.profile;
+
     return (
       <div className="card card-body mb-3">
         <div className="row">
           <div className="col-md-2">
-            <a href="profile.html">
+            <Link to={`/profile/${this.findHandleProfile(profiles, comment.user)}`}>
               <img className="rounded-circle d-none d-md-block"
                    src={comment.avatar} alt=""/>
-            </a>
+            </Link>
             <br/>
             <p className="text-center">{comment.name}</p>
           </div>
@@ -42,11 +62,13 @@ CommentItem.propTypes = {
   deleteComment: PropTypes.func.isRequired,
   comment: PropTypes.object.isRequired,
   postId: PropTypes.string.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  getProfiles: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  profile: state.profile
 });
 
-export default connect(mapStateToProps, {deleteComment})(CommentItem);
+export default connect(mapStateToProps, {deleteComment, getProfiles})(CommentItem);

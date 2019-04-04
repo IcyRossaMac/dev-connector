@@ -4,8 +4,13 @@ import {connect} from 'react-redux';
 import classnames from 'classnames';
 import {Link} from 'react-router-dom';
 import {deletePost, addLike, removeLike} from "../../actions/postActions";
+import { getProfiles } from '../../actions/profileActions';
 
 class PostItem extends Component {
+  componentDidMount() {
+    this.props.getProfiles();
+  }
+
   onDeleteClick(id) {
     this.props.deletePost(id)
   }
@@ -27,14 +32,27 @@ class PostItem extends Component {
     }
   }
 
+  findHandleProfile(profiles, postUser) {
+    let handle;
+    if (profiles != null && profiles.length > 0) {
+      profiles.forEach(profile => {
+        if (profile.user._id === postUser) {
+          handle = profile.handle;
+        }
+      });
+    }
+    return handle
+  }
+
   render() {
     const {post, auth, showActions} = this.props;
+    const {profiles} = this.props.profile;
 
     return (
       <div className="card card-body mb-3">
         <div className="row">
           <div className="col-md-2">
-            <Link to={``}>
+            <Link to={`/profile/${this.findHandleProfile(profiles, post.user)}`}>
               <img className="rounded-circle d-none d-md-block"
                    src={post.avatar}
                    alt=""/>
@@ -86,11 +104,13 @@ PostItem.propTypes = {
   addLike: PropTypes.func.isRequired,
   removeLike: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  getProfiles: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth
+  auth: state.auth,
+  profile: state.profile
 });
 
-export default connect(mapStateToProps, {deletePost, addLike, removeLike})(PostItem);
+export default connect(mapStateToProps, {deletePost, addLike, removeLike, getProfiles})(PostItem);
