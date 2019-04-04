@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 // const keys = require("../../config/keys");
 const passport = require("passport");
-// require('dotenv').config();
+require('dotenv').config();
 
 
 // Load Input Validation
