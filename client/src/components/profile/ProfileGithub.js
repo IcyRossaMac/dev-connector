@@ -2,7 +2,7 @@ import GithubRequest from '../../modules/GithubRequest'
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-require('dotenv').config();
+// require('dotenv').config();
 
 class ProfileGithub extends Component {
   constructor(props) {

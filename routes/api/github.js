@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const request = require('request');
-require('dotenv').config();
+// require('dotenv').config();
 
 router.get('/repos', function (req, res) {
 
